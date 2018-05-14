@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Installer.Pages.PageLicense"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Installer.Pages"
+             xmlns:controls="clr-namespace:Installer.Controls"
+             xmlns:viewmodels="clr-namespace:Installer.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignWidth="725"
+             d:DesignHeight="455">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" MouseDown="Image_MouseDown" Background="Blue" BorderBrush="#222" BorderThickness="0,0,1,0">
+                <Grid>
+                    <Image Name="WelcomeBanner" Source="{Binding WelcomeImage}" VerticalAlignment="Stretch" HorizontalAlignment="Left" Stretch="UniformToFill"></Image>
+                    <Button Content="Install" Click="Install_Click" VerticalAlignment="Bottom" Height="32" Margin="5" FontFamily="Calibri" FontSize="20" FontWeight="Light"></Button>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1" Margin="8,8,8,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="55"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="32"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <controls:EditableLabel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="Headline" Text="{Binding Headline, Mode=TwoWay}"  Margin="0,0,0,8" FontFamily="Calibri" FontSize="28" Foreground="#222222"></controls:EditableLabel>
+                <controls:EditableLabel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" BorderBrush="#959595" BorderThickness="1" x:Name="Text" Text="{Binding Text, Mode=TwoWay}" ShowVerticalScrollbar="True" Margin="0,0,0,0" FontFamily="Calibri" FontSize="16" Foreground="#222222"></controls:EditableLabel>
+                <CheckBox Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
+                <controls:EditableLabel Grid.Column="1" Grid.Row="2" x:Name="Text2" Text="{Binding Text2, Mode=TwoWay}" Margin="0,0,0,0" FontFamily="Calibri" FontSize="16" Foreground="#222222" HorizontalAlignment="Left" VerticalAlignment="Center"></controls:EditableLabel>
+
+                <CheckBox Grid.Column="1" Grid.Row="0" Content="Überspringen" HorizontalAlignment="Right"></CheckBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
