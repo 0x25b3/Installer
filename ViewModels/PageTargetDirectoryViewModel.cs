@@ -14,8 +14,8 @@ namespace Installer.ViewModels
     {
         private ImageSource welcomeImage = new BitmapImage(new Uri("/Installer;component/Resources/Welcome.png", UriKind.Relative));
         private string
-            headline = "Ziel-Verzeichnis",
-            text = "Wählen Sie das Verzeichnis, in das die Software installiert werden soll.\r\n\r\nSchreiben Sie hier darüber, welche Komponenten installiert werden.\r\n\r\nIn Version 2.0 werden hier die Komponenten angezeigt. Da das Feature noch nicht fertig ist, muss zunächst noch ein Text genügen.";
+            headline = "Target-Directory",
+            text = "Please select a target directory.\r\n\r\nThis area can contain additional information about the components being installed.\r\n\r\nIn the future there might be a component-selection embedded here.";
         
         public ImageSource WelcomeImage { get { return welcomeImage; } set { SetProperty(ref welcomeImage, value); } }
         public string Headline { get { return headline; } set { SetProperty(ref headline, value); } }

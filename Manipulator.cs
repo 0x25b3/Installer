@@ -108,9 +108,9 @@ namespace Installer
                 byte[] Data = Manipulator.GetResource(Type, Name);
                 Result = ByteArrayToImage(Data);
             }
-            catch //(Exception ex)
+            catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
             }
 
             return Result;
@@ -131,22 +131,36 @@ namespace Installer
             return Result;
         }
 
-        public static void Save()
+        public static bool Save()
         {
-            var Batch = 
-                $"@ECHO OFF\r\n" +
-                $"TIMEOUT 1\r\n" +
-                $"XCOPY /Y {TargetPath} {System.Reflection.Assembly.GetExecutingAssembly().Location}\r\n" +
-                $"DEL /Q {TargetPath}\r\n" +
-                $"(GOTO) 2>NUL & DEL \"%~f0\"";
+            bool Result = false;
 
-            var TempFile = Path.GetTempFileName();
-            TempFile = Path.ChangeExtension(TempFile, "bat");
-            File.WriteAllText(TempFile, Batch);
+            try
+            {
+                var Batch =
+                    $"@ECHO OFF\r\n" +
+                    $"TIMEOUT 1\r\n" +
+                    $"XCOPY /Y {TargetPath} {System.Reflection.Assembly.GetExecutingAssembly().Location}\r\n" +
+                    $"DEL /Q {TargetPath}\r\n" +
+                    $"(GOTO) 2>NUL & DEL \"%~f0\"";
 
-            ProcessStartInfo StartInfo = new ProcessStartInfo(TempFile);
-            StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            Process.Start(StartInfo);
+                var TempFile = Path.GetTempFileName();
+                TempFile = Path.ChangeExtension(TempFile, "bat");
+                File.WriteAllText(TempFile, Batch);
+
+                ProcessStartInfo StartInfo = new ProcessStartInfo(TempFile);
+                StartInfo.UseShellExecute = true;
+                StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                Process.Start(StartInfo);
+
+                Result = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return Result;
         }
 
         private static BitmapImage ByteArrayToImage(byte[] imageData)

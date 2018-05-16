@@ -14,8 +14,8 @@ namespace Installer.ViewModels
     {
         private ImageSource welcomeImage = new BitmapImage(new Uri("/Installer;component/Resources/Welcome.png", UriKind.Relative));
         private string
-            headline = "Vielen Dank!",
-            text = "Wir danken Ihnen, dass Sie unsere Software installiert haben.\r\n\r\nViel Freude!";
+            headline = "Thank you!",
+            text = "We're grateful, that you've installed our software.\r\n\r\nHave fun!";
         
         public ImageSource WelcomeImage { get { return welcomeImage; } set { SetProperty(ref welcomeImage, value); } }
         public string Headline { get { return headline; } set { SetProperty(ref headline, value); } }

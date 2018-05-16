@@ -147,11 +147,11 @@ namespace Installer
                 DataContext.CurrentIndex++;
                 DataContext.CurrentPage = DataContext.Pages.ElementAt(DataContext.CurrentIndex);
                 DataContext.BackButtonVisible = !(DataContext.CurrentPage is PageIntroViewModel || DataContext.CurrentPage is PageCompletionViewModel);
-                //TODO: Abbrechen Button?
+                //TODO: Cancel Button?
 
                 if(DataContext.CurrentIndex == DataContext.Pages.Count - 1)
                 {
-                    Foreward.Content = "Fertig";
+                    Foreward.Content = "Done";
                 }
             }
         }
@@ -169,7 +169,9 @@ namespace Installer
         }
         private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Manipulator.Save();
+            // Save, cancel close-event on error
+            if (Manipulator.Save() == false)
+                e.Cancel = true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

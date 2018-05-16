@@ -7,7 +7,7 @@
         xmlns:viewmodels="clr-namespace:Installer.ViewModels"
         xmlns:pages="clr-namespace:Installer.Pages"
         mc:Ignorable="d"
-        Title="Installer - Bearbeitungsmodus" Width="730" Height="535" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded" Closing="OnClosing">
+        Title="Installer - Edit-Mode" Width="730" Height="535" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded" Closing="OnClosing" Icon="Icon.ico">
     <Window.DataContext>
         <local:InstallerViewModel></local:InstallerViewModel>
     </Window.DataContext>
@@ -40,9 +40,9 @@
 
         <Border Grid.Row="1" BorderBrush="#757575" BorderThickness="0,1,0,0" Background="#c0c0c0">
             <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                <Button Name="Cancel" Content="Speichern" Click="OnCancel" Width="100" Margin="6,6,20,6"></Button>
-                <Button Name="Foreward" Content="Weiter" Click="PageContinue" Width="100" Margin="6,6,2,6"></Button>
-                <Button Name="Back" Content="Zurück" Click="PageBack" Width="100" Margin="2,6,6,6" Visibility="{Binding BackButtonVisible, Converter={StaticResource BoolToVisible}}"></Button>
+                <Button Name="Cancel" Content="Save" Click="OnCancel" Width="100" Margin="6,6,20,6"></Button>
+                <Button Name="Foreward" Content="Continue" Click="PageContinue" Width="100" Margin="6,6,2,6"></Button>
+                <Button Name="Back" Content="Back" Click="PageBack" Width="100" Margin="2,6,6,6" Visibility="{Binding BackButtonVisible, Converter={StaticResource BoolToVisible}}"></Button>
             </StackPanel>
         </Border>
     </Grid>

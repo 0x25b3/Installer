@@ -14,9 +14,9 @@ namespace Installer.ViewModels
     {
         private ImageSource welcomeImage = new BitmapImage(new Uri("/Installer;component/Resources/Welcome.png", UriKind.Relative));
         private string
-            headline = "Installieren..",
-            text = "Bitte warten Sie einen Moment, während die Software installiert wird.",
-            text2 = "Fortschritt:";
+            headline = "Installing..",
+            text = "Please wait a moment, while the software is being installed.",
+            text2 = "Progress:";
         
         public ImageSource WelcomeImage { get { return welcomeImage; } set { SetProperty(ref welcomeImage, value); } }
         public string Headline { get { return headline; } set { SetProperty(ref headline, value); } }
