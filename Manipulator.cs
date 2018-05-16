@@ -38,7 +38,7 @@ namespace Installer
         }
         public static void UpdateResource(string Type, string Name, Uri SourcePath)
         {
-            byte[] Data = File.ReadAllBytes(SourcePath.AbsolutePath);
+            byte[] Data = File.ReadAllBytes(Uri.UnescapeDataString(SourcePath.AbsolutePath));
             UpdateResource(Type, Name, Data);
         }
         public static void UpdateResource(string Type, string Name, byte[] Data)
@@ -137,11 +137,15 @@ namespace Installer
 
             try
             {
+                var PID = Process.GetCurrentProcess().Id;
+
                 var Batch =
                     $"@ECHO OFF\r\n" +
-                    $"TIMEOUT 1\r\n" +
-                    $"XCOPY /Y {TargetPath} {System.Reflection.Assembly.GetExecutingAssembly().Location}\r\n" +
-                    $"DEL /Q {TargetPath}\r\n" +
+                    $":LOOP\r\n" +
+                    $"TASKLIST /FI \"PID eq {PID}\" | find \":\" > nul\r\n" +
+                    $"IF ERRORLEVEL 1 GOTO LOOP\r\n" +
+                    $"XCOPY /Y \"{TargetPath}\" \"{System.Reflection.Assembly.GetExecutingAssembly().Location}\"\r\n" +
+                    $"DEL /Q \"{TargetPath}\"\r\n" +
                     $"(GOTO) 2>NUL & DEL \"%~f0\"";
 
                 var TempFile = Path.GetTempFileName();

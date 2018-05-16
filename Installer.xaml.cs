@@ -169,8 +169,8 @@ namespace Installer
         }
         private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Save, cancel close-event on error
-            if (Manipulator.Save() == false)
+            // Save changes, cancel close-event on error
+            if (MessageBox.Show("Save changes before exit?", "Sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes && Manipulator.Save() == false)
                 e.Cancel = true;
         }
 
