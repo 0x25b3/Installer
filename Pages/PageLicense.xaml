@@ -39,7 +39,7 @@
                 <CheckBox Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
                 <controls:EditableLabel Grid.Column="1" Grid.Row="2" x:Name="Text2" Text="{Binding Text2, Mode=TwoWay}" Margin="0,0,0,0" FontFamily="Calibri" FontSize="16" Foreground="#222222" HorizontalAlignment="Left" VerticalAlignment="Center"></controls:EditableLabel>
 
-                <CheckBox Grid.Column="1" Grid.Row="0" Content="Überspringen" HorizontalAlignment="Right"></CheckBox>
+                <CheckBox Grid.Column="1" Grid.Row="0" Content="Skip this page" HorizontalAlignment="Right"></CheckBox>
             </Grid>
         </Grid>
     </Grid>

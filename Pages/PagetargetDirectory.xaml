@@ -43,7 +43,7 @@
                         <ColumnDefinition Width="45"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Label Content="Ziel-Verzeichnis:" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontFamily="Calibri" FontSize="18"></Label>
+                    <Label Content="Target-Directory:" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontFamily="Calibri" FontSize="18"></Label>
                     
                     <TextBox Grid.Column="0" Grid.Row="1"></TextBox>
                     <Button Content=".." Grid.Column="1" Grid.Row="1"></Button>
