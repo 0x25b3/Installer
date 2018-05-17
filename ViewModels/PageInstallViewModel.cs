@@ -12,13 +12,13 @@ namespace Installer.ViewModels
 {
     public class PageInstallViewModel : ViewModel, IStorable
     {
-        private ImageSource welcomeImage = new BitmapImage(new Uri("/Installer;component/Resources/Welcome.png", UriKind.Relative));
+        private ImageSource installImage = new BitmapImage(new Uri("/Installer;component/Resources/Welcome.png", UriKind.Relative));
         private string
             headline = "Installing..",
             text = "Please wait a moment, while the software is being installed.",
             text2 = "Progress:";
         
-        public ImageSource WelcomeImage { get { return welcomeImage; } set { SetProperty(ref welcomeImage, value); } }
+        public ImageSource InstallImage { get { return installImage; } set { SetProperty(ref installImage, value); } }
         public string Headline { get { return headline; } set { SetProperty(ref headline, value); } }
         public string Text { get { return text; } set { SetProperty(ref text, value); } }
         public string Text2 { get { return text2; } set { SetProperty(ref text2, value); } }
@@ -27,9 +27,9 @@ namespace Installer.ViewModels
         {
             try
             {
-                var Image = Manipulator.GetResourceImage("Image", "WelcomeBanner");
+                var Image = Manipulator.GetResourceImage("Image", "InstallBanner");
                 if (Image != null)
-                    welcomeImage = Image;
+                    installImage = Image;
             
                 var HeadlineText = Manipulator.GetResourceString("Text", "Page4_Headline");
                 if (HeadlineText != null)

@@ -34,8 +34,8 @@ namespace Installer.Pages
                 var OPF = new OpenFileDialog();
                 if (OPF.ShowDialog() == true)
                 {
-                    WelcomeBanner.Source = new BitmapImage(new Uri(OPF.FileName));
-                    Manipulator.UpdateResource("Image", "WelcomeBanner", new Uri(OPF.FileName));
+                    Banner.Source = DataContext.LicenseImage = new BitmapImage(new Uri(OPF.FileName));
+                    Manipulator.UpdateResource("Image", "LicenseBanner", new Uri(OPF.FileName));
                 }
             }
         }

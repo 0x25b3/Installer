@@ -12,12 +12,12 @@ namespace Installer.ViewModels
 {
     public class PageCompletionViewModel : ViewModel, IStorable
     {
-        private ImageSource welcomeImage = new BitmapImage(new Uri("/Installer;component/Resources/Welcome.png", UriKind.Relative));
+        private ImageSource completionImage = new BitmapImage(new Uri("/Installer;component/Resources/Welcome.png", UriKind.Relative));
         private string
             headline = "Thank you!",
             text = "We're grateful, that you've installed our software.\r\n\r\nHave fun!";
         
-        public ImageSource WelcomeImage { get { return welcomeImage; } set { SetProperty(ref welcomeImage, value); } }
+        public ImageSource CompletionImage { get { return completionImage; } set { SetProperty(ref completionImage, value); } }
         public string Headline { get { return headline; } set { SetProperty(ref headline, value); } }
         public string Text { get { return text; } set { SetProperty(ref text, value); } }
 
@@ -25,9 +25,9 @@ namespace Installer.ViewModels
         {
             try
             {
-                var Image = Manipulator.GetResourceImage("Image", "WelcomeBanner");
+                var Image = Manipulator.GetResourceImage("Image", "CompletionBanner");
                 if (Image != null)
-                    welcomeImage = Image;
+                    completionImage = Image;
             
                 var HeadlineText = Manipulator.GetResourceString("Text", "Page5_Headline");
                 if (HeadlineText != null)

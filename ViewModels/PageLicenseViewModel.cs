@@ -12,13 +12,13 @@ namespace Installer.ViewModels
 {
     public class PageLicenseViewModel : ViewModel, IStorable
     {
-        private ImageSource welcomeImage = new BitmapImage(new Uri("/Installer;component/Resources/Welcome.png", UriKind.Relative));
+        private ImageSource licenseImage = new BitmapImage(new Uri("/Installer;component/Resources/Welcome.png", UriKind.Relative));
         private string
             headline = "Terms and conditions",
             text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non nibh congue, fermentum metus nec, dapibus risus. Integer id tellus quis sapien interdum varius. Donec fermentum velit libero, in bibendum lacus euismod et. Nunc tristique, risus ac condimentum mattis, purus nisl rhoncus justo, at faucibus odio purus a ante. Aenean urna lorem, sodales a rutrum eget, blandit quis justo. In nec viverra nulla. Mauris eu neque ut sapien malesuada bibendum sed quis elit. Nullam facilisis ipsum nunc, ut convallis sem lobortis at. Duis quis lorem nunc.\r\n\r\nNunc a sapien non neque posuere accumsan.Nunc maximus faucibus pulvinar.Nulla nec ultrices lorem, ut sagittis mauris.Etiam quis tristique tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Curabitur ac purus a ligula porttitor luctus.Donec egestas, dui vel molestie pretium, turpis turpis.\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non nibh congue, fermentum metus nec, dapibus risus. Integer id tellus quis sapien interdum varius. Donec fermentum velit libero, in bibendum lacus euismod et. Nunc tristique, risus ac condimentum mattis, purus nisl rhoncus justo, at faucibus odio purus a ante. Aenean urna lorem, sodales a rutrum eget, blandit quis justo. In nec viverra nulla. Mauris eu neque ut sapien malesuada bibendum sed quis elit. Nullam facilisis ipsum nunc, ut convallis sem lobortis at. Duis quis lorem nunc.\r\n\r\nNunc a sapien non neque posuere accumsan.Nunc maximus faucibus pulvinar.Nulla nec ultrices lorem, ut sagittis mauris.Etiam quis tristique tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Curabitur ac purus a ligula porttitor luctus.Donec egestas, dui vel molestie pretium, turpis turpis.",
             text2 = "I accept the terms and conditions";
         
-        public ImageSource WelcomeImage { get { return welcomeImage; } set { SetProperty(ref welcomeImage, value); } }
+        public ImageSource LicenseImage { get { return licenseImage; } set { SetProperty(ref licenseImage, value); } }
         public string Headline { get { return headline; } set { SetProperty(ref headline, value); } }
         public string Text { get { return text; } set { SetProperty(ref text, value); } }
         public string Text2 { get { return text2; } set { SetProperty(ref text2, value); } }
@@ -27,9 +27,9 @@ namespace Installer.ViewModels
         {
             try
             {
-                var Image = Manipulator.GetResourceImage("Image", "WelcomeBanner");
+                var Image = Manipulator.GetResourceImage("Image", "LicenseBanner");
                 if (Image != null)
-                    welcomeImage = Image;
+                    licenseImage = Image;
             
                 var HeadlineText = Manipulator.GetResourceString("Text", "Page2_Headline");
                 if (HeadlineText != null)
