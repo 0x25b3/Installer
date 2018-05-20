@@ -40,6 +40,8 @@ namespace Installer.ViewModels
         public string Text { get { return text; } set { SetProperty(ref text, value); } }
         public string Text2 { get { return text2; } set { SetProperty(ref text2, value); } }
 
+        public bool SkipLicenseBoxVisible { get => InstallerWindow.IsEditMode; }
+
         public PageLicenseViewModel()
         {
             try

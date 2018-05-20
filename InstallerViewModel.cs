@@ -22,12 +22,11 @@ namespace Installer
 {
     public class InstallerViewModel : ViewModel
     {
-        private bool isEditMode;
         private ViewModel currentPage;
         private int currentIndex = 0;
         private bool backButtonVisible = false, cancelButtonVisible = true;
 
-        public bool IsEditMode { get { return isEditMode; } set { SetProperty(ref isEditMode, value); } }
+        public bool IsEditMode { get => InstallerWindow.IsEditMode; }
         public ObservableCollection<ViewModel> Pages { get; internal set; } = new ObservableCollection<ViewModel>();
         public ViewModel CurrentPage { get { return currentPage; } set { SetProperty(ref currentPage, value); } }
         public int CurrentIndex { get { return currentIndex; } set { SetProperty(ref currentIndex, value); } }

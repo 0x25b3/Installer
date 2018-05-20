@@ -43,6 +43,8 @@ namespace Installer
 {
     public partial class InstallerWindow : Window
     {
+        public static bool IsEditMode { get; private set; } = true;
+
         public new InstallerViewModel DataContext { get { return base.DataContext as InstallerViewModel; } set { base.DataContext = value; } }
         
         public InstallerWindow()
@@ -99,7 +101,7 @@ namespace Installer
             #region Install-Mode
             if (Zip != null)
             {
-                DataContext.IsEditMode = false;
+                IsEditMode = false;
                 Manipulator.Initialize(Location, false);
             }
             #endregion
@@ -108,6 +110,8 @@ namespace Installer
             {
                 try
                 {
+                    IsEditMode = false;
+
                     Manipulator.Initialize(Location);
 
                     string OutputPath = System.IO.Path.ChangeExtension(args[1], "exe");
@@ -115,7 +119,7 @@ namespace Installer
                     if (!Exists || (Exists && MessageBox.Show($"Ausgabe-Datei \"{OutputPath}\" existiert bereits. Soll die Datei überschrieben werden?", "Überschreiben?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
                     {
                         Manipulator.UpdateResource("Content", "Data", File.ReadAllBytes(args[1]));
-                        File.Copy(Manipulator.TargetPath, OutputPath);
+                        File.Copy(Manipulator.TargetPath, OutputPath, true);
                     }
                 }
                 catch (Exception ex)
@@ -129,7 +133,7 @@ namespace Installer
             #region Edit-Mode
             else
             {
-                DataContext.IsEditMode = true;
+                IsEditMode = true;
                 
                 Manipulator.Initialize(Location);
             }
@@ -176,6 +180,7 @@ namespace Installer
         private void OnCancel(object sender, RoutedEventArgs e)
         {
             // Question
+            Manipulator.Close();
             Close();
         }
         private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)

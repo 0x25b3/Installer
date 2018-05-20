@@ -36,6 +36,7 @@ namespace Installer
 {
     public static class Manipulator
     {
+        static bool DeleteTempFile = false;
         public static string TargetPath { get; internal set; }
 
         public static void Initialize(string SourcePath, bool Copy = true)
@@ -44,6 +45,7 @@ namespace Installer
             {
                 TargetPath = Path.GetTempFileName();
                 File.Copy(SourcePath, TargetPath, true);
+                DeleteTempFile = true;
             }
             else
                 TargetPath = SourcePath;
@@ -200,6 +202,12 @@ namespace Installer
             }
             image.Freeze();
             return image;
+        }
+
+        public static void Close()
+        {
+            if (DeleteTempFile)
+                File.Delete(TargetPath);
         }
 
         //public static void AddToPrograms(string Path)

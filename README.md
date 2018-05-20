@@ -1,8 +1,7 @@
 0x25b3's Installer
 ==================
 
-Self-Contained Installer in .NET. Wizard by Day, Installer by Night.
+A small, self-modifying installer with WYSIWYG edit-mode that can be configured until a ZIP file is provided as argument (eg. drag'n'drop).
+At that point a non-editable copy will be created.
 
-(Actually, it's a Wizard until a ZIP is dragged on it. It then self-modifies and creates an unchangable copy)
-
-"Work in progress"
+Work in progress
