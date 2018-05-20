@@ -1,22 +1,11 @@
-﻿//TODO: PageTargetDir
-//TODO: PageInstall
-//TODO: PageCompletion
-//TODO: Komponenten-Logik überlegen (z.B. mit Sub-ZIPs)
-//TODO: Design für Buttons
-
-//TODO: Unbenutzten Third-Party-Code entfernen
-//TODO: Durchkommentieren & -Gruppieren
-//TODO: Copyright
-//TODO: Name festlegen
-//TODO: Name unten links
-
-using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Zip;
 using Installer.Base;
 using Installer.Pages;
 using Installer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -98,15 +87,17 @@ namespace Installer
             }
             #endregion
             #region Compilation-Mode
-            else if (File.Exists(args[0]) && args[0].EndsWith(".zip"))
+            else if (args.Length > 1 && File.Exists(args[1]) && args[1].EndsWith(".zip"))
             {
                 try
                 {
-                    string OutputPath = System.IO.Path.ChangeExtension(args[0], "exe");
+                    Manipulator.Initialize(Location);
+
+                    string OutputPath = System.IO.Path.ChangeExtension(args[1], "exe");
                     bool Exists = File.Exists(OutputPath);
                     if (!Exists || (Exists && MessageBox.Show($"Ausgabe-Datei \"{OutputPath}\" existiert bereits. Soll die Datei überschrieben werden?", "Überschreiben?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
                     {
-                        Manipulator.UpdateResource("Content", "Data", File.ReadAllBytes(args[0]));
+                        Manipulator.UpdateResource("Content", "Data", File.ReadAllBytes(args[1]));
                         File.Copy(Manipulator.TargetPath, OutputPath);
                     }
                 }
@@ -127,6 +118,9 @@ namespace Installer
             }
             #endregion
 
+            var desc = DependencyPropertyDescriptor.FromProperty(ContentControl.ContentProperty, typeof(UserControl));
+            desc.AddValueChanged(ContentView, OnPageChanged);
+
             DataContext.Pages.Add(new PageIntroViewModel());
             DataContext.Pages.Add(new PageLicenseViewModel());
             DataContext.Pages.Add(new PageTargetDirectoryViewModel());
@@ -146,20 +140,20 @@ namespace Installer
             {
                 DataContext.CurrentIndex++;
                 DataContext.CurrentPage = DataContext.Pages.ElementAt(DataContext.CurrentIndex);
-                DataContext.BackButtonVisible = !(DataContext.CurrentPage is PageIntroViewModel || DataContext.CurrentPage is PageCompletionViewModel);
-                //TODO: Cancel Button?
-
-                if(DataContext.CurrentIndex == DataContext.Pages.Count - 1)
-                {
-                    Foreward.Content = "Done";
-                }
             }
         }
         private void PageBack(object sender, RoutedEventArgs e)
         {
             DataContext.CurrentIndex--;
             DataContext.CurrentPage = DataContext.Pages.ElementAt(DataContext.CurrentIndex);
-            DataContext.BackButtonVisible = !(DataContext.CurrentPage is PageIntroViewModel);
+        }
+
+        private void OnPageChanged(object sender, EventArgs e)
+        {
+            DataContext.BackButtonVisible = DataContext.CurrentPage is PageIntroViewModel == false && (DataContext.IsEditMode || DataContext.CurrentPage is PageCompletionViewModel);
+            DataContext.CancelButtonVisible = DataContext.CurrentPage is PageCompletionViewModel == false;
+
+            Continue.Content = (DataContext.CurrentIndex == DataContext.Pages.Count - 1) ? "Done" : "Continue";
         }
 
         private void OnCancel(object sender, RoutedEventArgs e)
@@ -170,7 +164,7 @@ namespace Installer
         private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // Save changes, cancel close-event on error
-            if (MessageBox.Show("Save changes before exit?", "Sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes && Manipulator.Save() == false)
+            if (DataContext.IsEditMode && MessageBox.Show("Save changes before exit?", "Sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes && Manipulator.Save() == false)
                 e.Cancel = true;
         }
 
@@ -181,5 +175,8 @@ namespace Installer
             Variable = Value;
             NotifyPropertyChanged(PropertyName);
         }
+
+        private void Website_Click(object sender, RoutedEventArgs e) => Process.Start("https://github.com/0x25b3/Installer");
+
     }
 }

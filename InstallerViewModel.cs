@@ -8,7 +8,7 @@ namespace Installer
         private bool isEditMode;
         private ViewModel currentPage;
         private int currentIndex = 0;
-        private bool backButtonVisible = false;
+        private bool backButtonVisible = false, cancelButtonVisible = true;
 
         public bool IsEditMode { get { return isEditMode; } set { SetProperty(ref isEditMode, value); } }
         public ObservableCollection<ViewModel> Pages { get; internal set; } = new ObservableCollection<ViewModel>();
@@ -16,5 +16,6 @@ namespace Installer
         public int CurrentIndex { get { return currentIndex; } set { SetProperty(ref currentIndex, value); } }
 
         public bool BackButtonVisible { get { return backButtonVisible; } set { SetProperty(ref backButtonVisible, value); } }
+        public bool CancelButtonVisible { get { return cancelButtonVisible; } set { SetProperty(ref cancelButtonVisible, value); } }
     }
 }

@@ -7,6 +7,7 @@
              xmlns:controls="clr-namespace:Installer.Controls"
              xmlns:viewmodels="clr-namespace:Installer.ViewModels"
              mc:Ignorable="d" 
+             Background="White"
              d:DesignWidth="725"
              d:DesignHeight="455">
     <Grid>

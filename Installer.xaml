@@ -12,23 +12,57 @@
         <local:InstallerViewModel></local:InstallerViewModel>
     </Window.DataContext>
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisible"></BooleanToVisibilityConverter>
-        
-        <DataTemplate DataType="{x:Type viewmodels:PageIntroViewModel}">
-            <pages:PageIntro/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:PageLicenseViewModel}">
-            <pages:PageLicense/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:PageTargetDirectoryViewModel}">
-            <pages:PageTargetDirectory/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:PageInstallViewModel}">
-            <pages:PageInstall/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:PageCompletionViewModel}">
-            <pages:PageCompletion/>
-        </DataTemplate>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
+            <DataTemplate DataType="{x:Type viewmodels:PageIntroViewModel}">
+                <pages:PageIntro/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:PageLicenseViewModel}">
+                <pages:PageLicense/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:PageTargetDirectoryViewModel}">
+                <pages:PageTargetDirectory/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:PageInstallViewModel}">
+                <pages:PageInstall/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:PageCompletionViewModel}">
+                <pages:PageCompletion/>
+            </DataTemplate>
+
+            <LinearGradientBrush x:Key="ButtonBG" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                <GradientStop Color="#FFC4C4C4" Offset="1"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="ButtonBGHover" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Color="#FFC4C4C4" Offset="0"/>
+                <GradientStop Color="#FFFFFFFF" Offset="1"/>
+            </LinearGradientBrush>
+            
+            <Style TargetType="Button">
+                <Setter Property="BorderThickness" Value="1"></Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="ButtonBorder" CornerRadius="4" Background="{StaticResource ButtonBG}" BorderBrush="#8f8f94" BorderThickness="1,1,1,1">
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <!--<Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource ButtonBGHover}"></Setter>-->
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Button.Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="Black" Direction="270" ShadowDepth="1" BlurRadius="4" Opacity="0.25" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -36,14 +70,22 @@
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <ContentControl Grid.Row="0" Content="{Binding CurrentPage}"/>
+        <ContentPresenter Grid.Row="0" Name="ContentView" Content="{Binding CurrentPage}"/>
 
         <Border Grid.Row="1" BorderBrush="#757575" BorderThickness="0,1,0,0" Background="#c0c0c0">
-            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
-                <Button Name="Cancel" Content="Save" Click="OnCancel" Width="100" Margin="6,6,20,6"></Button>
-                <Button Name="Foreward" Content="Continue" Click="PageContinue" Width="100" Margin="6,6,2,6"></Button>
-                <Button Name="Back" Content="Back" Click="PageBack" Width="100" Margin="2,6,6,6" Visibility="{Binding BackButtonVisible, Converter={StaticResource BoolToVisible}}"></Button>
-            </StackPanel>
+            <Grid>
+                <TextBlock FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#f0f0f0" Margin="16,0" TextDecorations="None">
+                    <Hyperlink Click="Website_Click" TextDecorations="None" Foreground="#f0f0f0" Cursor="Arrow">&#x25B3;</Hyperlink>
+                    <TextBlock.BitmapEffect>
+                        <DropShadowBitmapEffect Color="#a0a0a0" Direction="135" ShadowDepth="1" Opacity="1" Softness="0" />
+                    </TextBlock.BitmapEffect>
+                </TextBlock>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" FlowDirection="RightToLeft">
+                    <Button Name="Cancel" Content="Save" Click="OnCancel" Width="100" Margin="6,6,3,6" Visibility="{Binding CancelButtonVisible, Converter={StaticResource BoolToVisible}}"></Button>
+                    <Button Name="Continue" Content="Continue" Click="PageContinue" Width="100" Margin="6,6,3,6"></Button>
+                    <Button Name="Back" Content="Back" Click="PageBack" Width="100" Margin="2,6,3,6" Visibility="{Binding BackButtonVisible, Converter={StaticResource BoolToVisible}}"></Button>
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </Window>
