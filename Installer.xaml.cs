@@ -180,14 +180,20 @@ namespace Installer
         private void OnCancel(object sender, RoutedEventArgs e)
         {
             // Question
-            Manipulator.Close();
             Close();
         }
         private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Save changes, cancel close-event on error
-            if (DataContext.IsEditMode && MessageBox.Show("Save changes before exit?", "Sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes && Manipulator.Save() == false)
-                e.Cancel = true;
+            // Ask if we want to save, abort on error
+            if (DataContext.IsEditMode && MessageBox.Show("Save changes before exit?", "Sure?", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                if(Manipulator.Save() == false)
+                    e.Cancel = true;
+            }
+
+            //// Clean up temp files if we're closing
+            //if(e.Cancel == false)
+            //    Manipulator.Close();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

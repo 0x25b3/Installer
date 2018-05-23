@@ -29,7 +29,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Benjamin Bartels Softwareentwicklung")]
 [assembly: AssemblyProduct("Installer")]
-[assembly: AssemblyCopyright("Copyright ©  2017 Benjamin Bartels.")]
+[assembly: AssemblyCopyright("Copyright ©  2017 - 2018 Benjamin Bartels.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

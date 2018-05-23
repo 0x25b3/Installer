@@ -53,7 +53,7 @@ namespace Installer
 
         public static void UpdateResource(string Type, string Name, string Data)
         {
-            UpdateResource(Type, Name, Encoding.ASCII.GetBytes(Data));
+            UpdateResource(Type, Name, Encoding.UTF8.GetBytes(Data));
         }
         public static void UpdateResource(string Type, string Name, Uri SourcePath)
         {
@@ -76,6 +76,7 @@ namespace Installer
             catch (Exception ex)
             {
                 Exception = ex;
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -129,7 +130,6 @@ namespace Installer
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
             }
 
             return Result;
@@ -142,9 +142,8 @@ namespace Installer
                 byte[] Data = Manipulator.GetResource(Type, Name);
                 Result = System.Text.Encoding.UTF8.GetString(Data);
             }
-            catch
+            catch(Exception ex)
             {
-
             }
 
             return Result;
@@ -163,7 +162,7 @@ namespace Installer
                     $":LOOP\r\n" +
                     $"TASKLIST /FI \"PID eq {PID}\" | find \":\" > nul\r\n" +
                     $"IF ERRORLEVEL 1 GOTO LOOP\r\n" +
-                    $"XCOPY /Y \"{TargetPath}\" \"{System.Reflection.Assembly.GetExecutingAssembly().Location}\"\r\n" +
+                    $"MOVE /Y \"{TargetPath}\" \"{System.Reflection.Assembly.GetExecutingAssembly().Location}\"\r\n" +
                     $"DEL /Q \"{TargetPath}\"\r\n" +
                     $"(GOTO) 2>NUL & DEL \"%~f0\"";
 

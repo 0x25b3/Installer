@@ -50,7 +50,7 @@
                 <GradientStop Color="#FFFFFFFF" Offset="0"/>
                 <GradientStop Color="#FFC4C4C4" Offset="1"/>
             </LinearGradientBrush>
-            <LinearGradientBrush x:Key="ButtonBGHover" StartPoint="0.5,0" EndPoint="0.5,1">
+            <LinearGradientBrush x:Key="ButtonBGClick" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop Color="#FFC4C4C4" Offset="0"/>
                 <GradientStop Color="#FFFFFFFF" Offset="1"/>
             </LinearGradientBrush>
@@ -62,19 +62,24 @@
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="ButtonBorder" CornerRadius="4" Background="{StaticResource ButtonBG}" BorderBrush="#8f8f94" BorderThickness="1,1,1,1">
                                 <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Black" Direction="270" ShadowDepth="1" BlurRadius="4" Opacity="0.25" />
+                                </Border.Effect>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Cursor" Value="Hand" />
-                                    <!--<Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource ButtonBGHover}"></Setter>-->
+                                    <Setter TargetName="ButtonBorder" Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect Color="#49c5ff" Direction="270" ShadowDepth="0" BlurRadius="3" Opacity="1" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="Button.IsPressed" Value="True">
+                                    <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource ButtonBGClick}" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="Button.Effect">
-                    <Setter.Value>
-                        <DropShadowEffect Color="Black" Direction="270" ShadowDepth="1" BlurRadius="4" Opacity="0.25" />
                     </Setter.Value>
                 </Setter>
             </Style>
