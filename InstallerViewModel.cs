@@ -25,7 +25,9 @@ namespace Installer
         private ViewModel currentPage;
         private int currentIndex = 0;
         private bool backButtonVisible = false, cancelButtonVisible = true;
+        private bool hasContent;
 
+        public bool HasContent { get { return hasContent; } set { SetProperty(ref hasContent, value); } }
         public bool IsEditMode { get => InstallerWindow.IsEditMode; }
         public ObservableCollection<ViewModel> Pages { get; internal set; } = new ObservableCollection<ViewModel>();
         public ViewModel CurrentPage { get { return currentPage; } set { SetProperty(ref currentPage, value); } }
@@ -33,5 +35,7 @@ namespace Installer
 
         public bool BackButtonVisible { get { return backButtonVisible; } set { SetProperty(ref backButtonVisible, value); } }
         public bool CancelButtonVisible { get { return cancelButtonVisible; } set { SetProperty(ref cancelButtonVisible, value); } }
+
+        public string OutputFolder { get; internal set; }
     }
 }

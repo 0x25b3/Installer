@@ -34,19 +34,24 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Installer.Base;
 using Installer.Pages;
 using Installer.ViewModels;
+using Path = System.IO.Path;
 
 namespace Installer
 {
     public partial class InstallerWindow : Window
     {
+        #region Properties
         public static bool IsEditMode { get; private set; } = true;
 
         public new InstallerViewModel DataContext { get { return base.DataContext as InstallerViewModel; } set { base.DataContext = value; } }
-        
+        #endregion
+
+        #region Constructor & OnLoad
         public InstallerWindow()
         {
             InitializeComponent();
@@ -56,8 +61,8 @@ namespace Installer
         {
             string[] args = Environment.GetCommandLineArgs();
             var Location = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            
             ZipFile Zip = null;
-
             #region Get ZIP if available
             IntPtr TargetHandle = IntPtr.Zero;
             try
@@ -68,6 +73,8 @@ namespace Installer
 
                 var Res = Win32.FindResource(TargetHandle, "Data", "Content");
 
+                DataContext.HasContent = Res != IntPtr.Zero;
+
                 if (Res != IntPtr.Zero)
                 {
                     uint size = Win32.SizeofResource(TargetHandle, Res);
@@ -76,11 +83,41 @@ namespace Installer
                     byte[] bPtr = new byte[size];
                     Marshal.Copy(pt, bPtr, 0, (int)size);
 
-                    var TempPath = System.IO.Path.GetTempFileName();
+                    var zipStream = new MemoryStream(bPtr);
 
-                    File.WriteAllBytes(TempPath, bPtr);
+                    var OutputFolder = DataContext.OutputFolder;
 
-                    Zip = new ZipFile(TempPath);
+                    ZipInputStream zipInputStream = new ZipInputStream(zipStream);
+                    ZipEntry zipEntry = zipInputStream.GetNextEntry();
+                    while (zipEntry != null)
+                    {
+                        String entryFileName = zipEntry.Name;
+
+                        byte[] buffer = new byte[4096];     // 4K is optimum
+
+                        // Manipulate the output filename here as desired.
+                        String fullZipToPath = Path.Combine(OutputFolder, entryFileName);
+                        string directoryName = Path.GetDirectoryName(fullZipToPath);
+                        if (directoryName.Length > 0)
+                            Directory.CreateDirectory(directoryName);
+
+                        // Skip directory entry
+                        string fileName = Path.GetFileName(fullZipToPath);
+                        if (fileName.Length == 0)
+                        {
+                            zipEntry = zipInputStream.GetNextEntry();
+                            continue;
+                        }
+
+                        // Unzip file in buffered chunks. This is just as fast as unpacking to a buffer the full size
+                        // of the file, but does not waste memory.
+                        // The "using" will close the stream even if an exception occurs.
+                        using (FileStream streamWriter = File.Create(fullZipToPath))
+                        {
+                            StreamUtils.Copy(zipInputStream, streamWriter, buffer);
+                        }
+                        zipEntry = zipInputStream.GetNextEntry();
+                    }
                 }
             }
             catch (Exception ex)
@@ -102,7 +139,7 @@ namespace Installer
             if (Zip != null)
             {
                 IsEditMode = false;
-                Manipulator.Initialize(Location, false);
+                
             }
             #endregion
             #region Compilation-Mode
@@ -150,7 +187,9 @@ namespace Installer
 
             DataContext.CurrentPage = DataContext.Pages.FirstOrDefault();
         }
+        #endregion
 
+        #region Pagination
         private void PageContinue(object sender, RoutedEventArgs e)
         {
             if(DataContext.CurrentIndex == DataContext.Pages.Count - 1)
@@ -176,7 +215,9 @@ namespace Installer
 
             Continue.Content = (DataContext.CurrentIndex == DataContext.Pages.Count - 1) ? "Done" : "Continue";
         }
+        #endregion
 
+        #region Close
         private void OnCancel(object sender, RoutedEventArgs e)
         {
             // Question
@@ -195,7 +236,14 @@ namespace Installer
             //if(e.Cancel == false)
             //    Manipulator.Close();
         }
+        #endregion
 
+        /// <summary>
+        /// Kewl link to the repo.
+        /// </summary>
+        private void Website_Click(object sender, RoutedEventArgs e) => Process.Start("https://github.com/0x25b3/Installer");
+
+        #region NotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         internal void NotifyPropertyChanged([CallerMemberName] string PropertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         internal void SetProperty<T>(ref T Variable, T Value, [CallerMemberName] string PropertyName = "")
@@ -203,8 +251,6 @@ namespace Installer
             Variable = Value;
             NotifyPropertyChanged(PropertyName);
         }
-
-        private void Website_Click(object sender, RoutedEventArgs e) => Process.Start("https://github.com/0x25b3/Installer");
-
+        #endregion
     }
 }

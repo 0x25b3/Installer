@@ -29,6 +29,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -62,6 +64,9 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -109,46 +114,6 @@
     <Compile Include="ViewModels\PageTargetDirectoryViewModel.cs" />
     <Compile Include="ViewModels\PageLicenseViewModel.cs" />
     <Compile Include="Win32.cs" />
-    <Compile Include="ZIP\Adler32.cs" />
-    <Compile Include="ZIP\CRC32.cs" />
-    <Compile Include="ZIP\Deflater.cs" />
-    <Compile Include="ZIP\DeflaterConstants.cs" />
-    <Compile Include="ZIP\DeflaterEngine.cs" />
-    <Compile Include="ZIP\DeflaterHuffman.cs" />
-    <Compile Include="ZIP\DeflaterOutputStream.cs" />
-    <Compile Include="ZIP\DeflaterPending.cs" />
-    <Compile Include="ZIP\FastZip.cs" />
-    <Compile Include="ZIP\FileSystemScanner.cs" />
-    <Compile Include="ZIP\IChecksum.cs" />
-    <Compile Include="ZIP\IEntryFactory.cs" />
-    <Compile Include="ZIP\INameTransform.cs" />
-    <Compile Include="ZIP\Inflater.cs" />
-    <Compile Include="ZIP\InflaterDynHeader.cs" />
-    <Compile Include="ZIP\InflaterHuffmanTree.cs" />
-    <Compile Include="ZIP\InflaterInputStream.cs" />
-    <Compile Include="ZIP\IScanFilter.cs" />
-    <Compile Include="ZIP\NameFilter.cs" />
-    <Compile Include="ZIP\OutputWindow.cs" />
-    <Compile Include="ZIP\PathFilter.cs" />
-    <Compile Include="ZIP\PendingBuffer.cs" />
-    <Compile Include="ZIP\PkzipClassic.cs" />
-    <Compile Include="ZIP\SharpZipBaseException.cs" />
-    <Compile Include="ZIP\StreamManipulator.cs" />
-    <Compile Include="ZIP\StreamUtils.cs" />
-    <Compile Include="ZIP\WindowsNameTransform.cs" />
-    <Compile Include="ZIP\WindowsPathUtils.cs" />
-    <Compile Include="ZIP\ZipAESStream.cs" />
-    <Compile Include="ZIP\ZipAESTransform.cs" />
-    <Compile Include="ZIP\ZipConstants.cs" />
-    <Compile Include="ZIP\ZipEntry.cs" />
-    <Compile Include="ZIP\ZipEntryFactory.cs" />
-    <Compile Include="ZIP\ZipException.cs" />
-    <Compile Include="ZIP\ZipExtraData.cs" />
-    <Compile Include="ZIP\ZipFile.cs" />
-    <Compile Include="ZIP\ZipHelperStream.cs" />
-    <Compile Include="ZIP\ZipInputStream.cs" />
-    <Compile Include="ZIP\ZipNameTransform.cs" />
-    <Compile Include="ZIP\ZipOutputStream.cs" />
     <Page Include="Controls\EditableLabel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -205,6 +170,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="LICENSE" />
+    <None Include="packages.config" />
     <None Include="Properties\app.manifest">
       <SubType>Designer</SubType>
     </None>
@@ -231,4 +197,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Costura.Fody.2.0.1\build\Costura.Fody.targets" Condition="Exists('packages\Costura.Fody.2.0.1\build\Costura.Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Costura.Fody.2.0.1\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Costura.Fody.2.0.1\build\Costura.Fody.targets'))" />
+  </Target>
 </Project>
